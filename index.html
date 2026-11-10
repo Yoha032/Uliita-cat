@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Улита — Магазин авторских наборов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f1ea;
+    --bg-light: #faf7f2;
+    --accent: #8a9a7b;
+    --accent-dark: #6b7a5e;
+    --gold: #c9a87c;
+    --text: #3d3833;
+    --text-light: #6b635a;
+    --shadow: 0 4px 20px rgba(61, 56, 51, 0.08);
+  }
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+  
+  h1, h2, h3, h4 { font-family: 'Cormorant Garamond', serif; font-weight: 500; line-height: 1.2; }
+  
+  /* ===== NAVIGATION ===== */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(245, 241, 234, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    padding: 16px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--accent-dark);
+    text-decoration: none;
+    font-style: italic;
+  }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-link {
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-link:hover { color: var(--accent); }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    background: linear-gradient(135deg, #f5f1ea 0%, #ebe3d5 100%);
+    position: relative;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 800px; }
+  .hero-eyebrow {
+    font-size: 14px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+  .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); margin-bottom: 24px; color: var(--text); }
+  .hero h1 em { font-style: italic; color: var(--accent-dark); }
+  .hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--text-light);
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin: 0 auto 40px;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 16px 40px;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+  }
+  .btn:hover { background: var(--accent-dark); transform: translateY(-2px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--accent-dark);
+    border: 1.5px solid var(--accent);
+    margin-left: 12px;
+  }
+  .btn-secondary:hover { background: var(--accent); color: white; }
+
+  /* ===== SECTIONS ===== */
+  section { padding: 100px 0; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .section-title { text-align: center; margin-bottom: 60px; }
+  .section-title .eyebrow {
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  .section-title h2 { font-size: clamp(2rem, 4vw, 3rem); color: var(--text); }
+
+  /* ===== SHOP GRID ===== */
+  .shop-filters {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    padding: 10px 24px;
+    background: white;
+    border: 1px solid #e0d8cf;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    transition: all 0.3s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  
+  .heroes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 32px;
+  }
+  .hero-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-card:hover { transform: translateY(-8px); box-shadow: 0 12px 32px rgba(61, 56, 51, 0.12); }
+  .hero-image { width: 100%; height: 280px; object-fit: cover; background: #ebe3d5; }
+  .hero-card-content { padding: 28px; flex-grow: 1; display: flex; flex-direction: column; }
+  .hero-name { font-size: 1.6rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .hero-epithet { font-style: italic; color: var(--accent-dark); font-size: 0.95rem; margin-bottom: 16px; }
+  .hero-quote {
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 16px;
+    padding-left: 16px;
+    border-left: 2px solid var(--gold);
+    font-style: italic;
+    flex-grow: 1;
+  }
+  .hero-price-tag {
+    display: inline-block;
+    margin-top: auto;
+    padding: 8px 16px;
+    background: var(--bg);
+    color: var(--accent-dark);
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    align-self: flex-start;
+  }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(61, 56, 51, 0.7);
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    padding: 20px;
+  }
+  .modal-overlay.active { opacity: 1; visibility: visible; }
+  
+  .modal-content {
+    background: var(--bg-light);
+    border-radius: 24px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    position: relative;
+    transform: translateY(30px) scale(0.95);
+    transition: transform 0.3s ease;
+  }
+  .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
+  
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+    z-index: 10;
+    transition: transform 0.2s;
+  }
+  .modal-close:hover { transform: rotate(90deg); }
+  
+  .modal-image-wrapper { position: relative; background: #ebe3d5; }
+  .modal-image { width: 100%; height: 100%; object-fit: cover; border-radius: 24px 0 0 24px; }
+  
+  .modal-details { padding: 40px; display: flex; flex-direction: column; }
+  .modal-category {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .modal-title { font-size: 2.2rem; color: var(--text); margin-bottom: 8px; }
+  .modal-epithet { font-style: italic; color: var(--accent-dark); font-size: 1.1rem; margin-bottom: 24px; }
+  
+  .modal-quote {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 3px solid var(--gold);
+    font-style: italic;
+    color: var(--text);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+  
+  .modal-description { color: var(--text-light); margin-bottom: 24px; line-height: 1.8; }
+  
+  .modal-includes {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 32px;
+  }
+  .modal-includes h4 { font-size: 1.1rem; margin-bottom: 12px; color: var(--accent-dark); }
+  .modal-includes ul { list-style: none; padding: 0; }
+  .modal-includes li {
+    padding: 6px 0;
+    padding-left: 24px;
+    position: relative;
+    font-size: 0.95rem;
+    color: var(--text-light);
+  }
+  .modal-includes li::before {
+    content: '🌿';
+    position: absolute;
+    left: 0;
+    font-size: 0.9rem;
+  }
+  
+  .modal-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 24px;
+    border-top: 1px solid #e0d8cf;
+  }
+  .modal-price { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 600; color: var(--accent-dark); }
+  
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .modal-content { grid-template-columns: 1fr; max-height: 95vh; }
+    .modal-image { height: 250px; border-radius: 24px 24px 0 0; }
+    .modal-details { padding: 24px; }
+    .modal-footer { flex-direction: column; gap: 16px; align-items: stretch; text-align: center; }
+    .btn { width: 100%; text-align: center; }
+    .btn-secondary { margin-left: 0; margin-top: 12px; }
+  }
+
+  /* ===== ANIMATIONS ===== */
+  .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="#" class="nav-brand">Улита</a>
+    <div class="nav-links">
+      <a href="#hero" class="nav-link">Главная</a>
+      <a href="#shop" class="nav-link">Магазин</a>
+      <a href="#about" class="nav-link">О наборе</a>
+      <a href="#contacts" class="nav-link">Контакты</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" class="hero">
+  <div class="hero-content fade-in">
+    <div class="hero-eyebrow">Мастерская «Улита»</div>
+    <h1>Маленькие хранители <em>твоего</em> пространства</h1>
+    <p class="hero-subtitle">Авторские наборы с деревянным домиком, жителем и ароматом-якорем. Больше, чем декор — это тихий якорь твоего состояния.</p>
+    <a href="#shop" class="btn">Перейти в магазин</a>
+    <a href="https://vk.ru/market-108515547" target="_blank" class="btn btn-secondary">Каталог ВКонтакте</a>
+  </div>
+</section>
+
+<!-- ABOUT SET -->
+<section id="about" style="background: var(--bg-light);">
+  <div class="container">
+    <div class="section-title fade-in">
+      <div class="eyebrow">Магия в деталях</div>
+      <h2>Что внутри каждой коробочки?</h2>
+    </div>
+    <div class="heroes-grid" style="max-width: 900px; margin: 0 auto;">
+      <div class="hero-card fade-in" style="cursor: default;">
+        <div class="hero-card-content" style="text-align: center;">
+          <div style="font-size: 48px; margin-bottom: 16px;">🏡</div>
+          <h3>Домик и житель</h3>
+          <p style="color: var(--text-light);">Выточен из дерева и расписан вручную. Внутри живёт твой маленький хранитель.</p>
+        </div>
+      </div>
+      <div class="hero-card fade-in" style="cursor: default;">
+        <div class="hero-card-content" style="text-align: center;">
+          <div style="font-size: 48px; margin-bottom: 16px;">📜</div>
+          <h3>Паспорт и Письмо</h3>
+          <p style="color: var(--text-light);">История героя и личное послание в конверте с маркой. Только для тебя.</p>
+        </div>
+      </div>
+      <div class="hero-card fade-in" style="cursor: default;">
+        <div class="hero-card-content" style="text-align: center;">
+          <div style="font-size: 48px; margin-bottom: 16px;">🗝</div>
+          <h3>Ключик и Птичка</h3>
+          <p style="color: var(--text-light);">Звенящий ключик от сказки и белая керамическая птичка-хранительница желаний.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOP -->
+<section id="shop">
+  <div class="container">
+    <div class="section-title fade-in">
+      <div class="eyebrow">Каталог</div>
+      <h2>Выбери своего героя</h2>
+    </div>
+    
+    <div class="shop-filters fade-in">
+      <button class="filter-btn active" onclick="filterProducts('all')">Все</button>
+      <button class="filter-btn" onclick="filterProducts('Лесная терапия')">Лесная терапия</button>
+      <button class="filter-btn" onclick="filterProducts('Волшебство и поддержка')">Волшебство и поддержка</button>
+      <button class="filter-btn" onclick="filterProducts('Нежность и обновление')">Нежность и обновление</button>
+    </div>
+
+    <div class="heroes-grid" id="shop-grid">
+      <!-- Товары будут добавлены сюда через JavaScript -->
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTS -->
+<section id="contacts" style="background: linear-gradient(135deg, #ebe3d5 0%, #f5f1ea 100%); text-align: center;">
+  <div class="container fade-in">
+    <h2>Готовы найти своего героя?</h2>
+    <p style="color: var(--text-light); margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto;">Напишите нам — мы поможем выбрать того, кто откликнется именно вам сейчас.</p>
+    <a href="https://vk.ru/market-108515547" target="_blank" class="btn">Заказать ВКонтакте</a>
+  </div>
+</section>
+
+<footer style="background: var(--text); color: #d4ccc2; text-align: center; padding: 40px 24px; font-size: 0.9rem;">
+  <div style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: white; margin-bottom: 8px; font-style: italic;">Улита</div>
+  <p>Мастерская авторских ароматных наборов · 2026</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="product-modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-image-wrapper">
+      <img src="" alt="" class="modal-image" id="modal-img">
+    </div>
+    <div class="modal-details">
+      <div class="modal-category" id="modal-category">Категория</div>
+      <h2 class="modal-title" id="modal-name">Название</h2>
+      <div class="modal-epithet" id="modal-epithet">Эпитет</div>
+      
+      <div class="modal-quote" id="modal-quote">Цитата</div>
+      
+      <p class="modal-description" id="modal-description">Описание</p>
+      
+      <div class="modal-includes">
+        <h4>📦 В вашей коробочке будет:</h4>
+        <ul id="modal-includes-list">
+          <!-- Список -->
+        </ul>
+      </div>
+      
+      <div class="modal-footer">
+        <div class="modal-price" id="modal-price">2 600 ₽</div>
+        <a href="https://vk.ru/market-108515547" target="_blank" class="btn">Заказать этого героя</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== БАЗА ДАННЫХ ТОВАРОВ =====
+  // Чтобы добавить новый товар, просто скопируйте блок {...}, вставьте его в конец массива и замените данные.
+  // Ссылки на картинки берутся напрямую из вашего GitHub репозитория.
+  const products = [
+    {
+      id: 'mukhomorchik',
+      name: 'Мухоморчик',
+      epithet: '«Лесной смех»',
+      category: 'Лесная терапия',
+      image: 'https://raw.githubusercontent.com/Yoha032/Uliita-cat/main/site/%D0%BC%D1%83%D1%85%D0%BE%D0%BC%D0%BE%D1%80%D1%87%D0%B8%D0%BA/IMG_5477.png',
+      quote: '«Улыбнись. Ты имеешь право на радость и лёгкость прямо сейчас, без всяких условий».',
+      aroma: 'хвоя, дикий мёд, летний лес',
+      price: '2 600 ₽',
+      description: 'Мухоморчик — добрый весельчак с яркой красной шапочкой. Озорной вид и заразительный смех делают его любимцем лесных жителей. Он обожает свой лес и всегда находится в прекрасном настроении, готов прийти на помощь и развеселить всех, кто грустит. Мухоморчик умеет находить радость в простых вещах и делится ею с окружающими.',
+      includes: [
+        'Домик, выточенный из дерева и расписанный вручную',
+        'Ароматная бусина (хвоя, дикий мёд)',
+        'Паспорт жителя с именем и историей',
+        'Личное письмо в конверте с маркой',
+        'Ключик от сказки на верёвочке',
+        'Белая керамическая птичка-хранительница'
+      ]
+    },
+    {
+      id: 'tykovka',
+      name: 'Тыковка',
+      epithet: '«Безумная Осень»',
+      category: 'Нежность и обновление',
+      image: 'https://raw.githubusercontent.com/Yoha032/Uliita-cat/main/site/%D1%82%D1%8B%D0%BA%D0%BE%D0%B2%D0%BA%D0%B0/IMG_3912.png',
+      quote: '«Чудо прячется в обыденности. Позволь себе немного волшебства уже сегодня».',
+      aroma: 'корица, влажная листва, печёное яблоко',
+      price: '2 600 ₽',
+      description: 'Тыковка — оригинальная и креативная девочка, всегда полная идей. Её дом наполнен необычными творениями, которые она с радостью создает. Она является лучшей подругой Вишенки и вдохновляет её на смелые художественные эксперименты. Тыковка всегда готова поделиться своими находками и оригинальными поделками с друзьями.',
+      includes: [
+        'Домик, выточенный из дерева и расписанный вручную',
+        'Ароматная бусина (корица, печёное яблоко)',
+        'Паспорт жителя с именем и историей',
+        'Личное письмо в конверте с маркой',
+        'Ключик от сказки на верёвочке',
+        'Белая керамическая птичка-хранительница'
+      ]
+    },
+    {
+      id: 'vishenka',
+      name: 'Вишенка',
+      epithet: '«Рассвет Акварели»',
+      category: 'Нежность и обновление',
+      image: 'https://raw.githubusercontent.com/Yoha032/Uliita-cat/main/site/%D0%B2%D0%B8%D1%88%D0%B5%D0%BD%D0%BA%D0%B0/IMG_2301.JPG',
+      quote: '«Разреши себе мечтать и быть неидеальной. Ты прекрасна в своём процессе».',
+      aroma: 'пион, розовый рассвет, акварельная бумага',
+      price: '2 600 ₽',
+      description: 'Вишенка — скромная и мечтательная девочка, которая живет в милом розовом домике с коричневой крышей. Она любит рисовать и создавать живописные миры на бумаге, теряясь в своих фантазиях. Вишенка дружит с Тыковкой, они вместе проводят время, обсуждая свои мечты и творческие замыслы.',
+      includes: [
+        'Домик, выточенный из дерева и расписанный вручную',
+        'Ароматная бусина (пион, розовый рассвет)',
+        'Паспорт жителя с именем и историей',
+        'Личное письмо в конверте с маркой',
+        'Ключик от сказки на верёвочке',
+        'Белая керамическая птичка-хранительница'
+      ]
+    },
+    {
+      id: 'zvezdochet',
+      name: 'Волшебник Звездочёт',
+      epithet: '«Пойманные звёзды»',
+      category: 'Волшебство и поддержка',
+      image: 'https://raw.githubusercontent.com/Yoha032/Uliita-cat/main/site/%D0%B2%D0%BE%D0%BB%D1%88%D0%B5%D0%B1%D0%BD%D0%B8%D0%BA%20%D0%B7%D0%B2%D0%B5%D0%B7%D0%B4%D0%BE%D1%87%D1%91%D1%82/IMG_5512.png',
+      quote: '«Ты на верном пути, даже если сейчас вокруг темно».',
+      aroma: 'кедр, холодный металл, ладан',
+      price: '2 600 ₽',
+      description: 'Тот, кто знает карту звёздного неба наизусть и всегда укажет верное направление. Он соберёт для тебя самые яркие звёзды, чтобы осветить путь, когда кажется, что надежды нет. Его присутствие дарит спокойствие и уверенность в завтрашнем дне.',
+      includes: [
+        'Домик, выточенный из дерева и расписанный вручную',
+        'Ароматная бусина (кедр, ладан)',
+        'Паспорт жителя с именем и историей',
+        'Личное письмо в конверте с маркой',
+        'Ключик от сказки на верёвочке',
+        'Белая керамическая птичка-хранительница'
+      ]
+    },
+    {
+      id: 'pryanichnaya',
+      name: 'Пряничная Фея',
+      epithet: '«Дом, которого не хватало»',
+      category: 'Волшебство и поддержка',
+      image: 'https://raw.githubusercontent.com/Yoha032/Uliita-cat/main/site/%D0%BF%D1%80%D1%8F%D0%BD%D0%B8%D1%87%D0%BD%D0%B0%D1%8F%20%D1%84%D0%B5%D1%8F/IMG_5510.png',
+      quote: '«Ты всегда найдёшь здесь свой дом, где тебя ждут и любят».',
+      aroma: 'ваниль, корица, тёплая карамель',
+      price: '2 600 ₽',
+      description: 'Она хранит тепло домашнего очага и знает секрет самого уютного вечера. Рядом с ней пахнет свежевыпеченным печеньем, а тревоги растворяются в тёплом свете её фонарика. Она напомнит, что ты всегда заслуживаешь заботы и отдыха.',
+      includes: [
+        'Домик, выточенный из дерева и расписанный вручную',
+        'Ароматная бусина (ваниль, карамель)',
+        'Паспорт жителя с именем и историей',
+        'Личное письмо в конверте с маркой',
+        'Ключик от сказки на верёвочке',
+        'Белая керамическая птичка-хранительница'
+      ]
+    },
+    {
+      id: 'secret15',
+      name: 'Секретная 15-я коробочка',
+      epithet: '«Лесная интрига»',
+      category: 'Особые предложения',
+      image: 'https://raw.githubusercontent.com/Yoha032/Uliita-cat/main/site/%D1%81%D0%B5%D0%BA%D1%80%D0%B5%D1%82%D0%BD%D0%B0%D1%8F%2015%20%D0%BA%D0%BE%D1%80%D0%BE%D0%B1%D0%BE%D1%87%D0%BA%D0%B0/IMG_3915.png',
+      quote: '«Каждая коробочка — это маленькая история, которую лес рассказывает именно тебе».',
+      aroma: 'сюрприз, подобранный лесом специально для вашего состояния',
+      price: '2 600 ₽',
+      description: 'Для тех, кто доверяет интуиции и любит сюрпризы. Мы сами выберем для вас хранителя, который нужен вам именно сейчас. Это может быть кто-то из постоянных героев или совершенно особый, лимитированный житель леса.',
+      includes: [
+        'Домик, выточенный из дерева и расписанный вручную',
+        'Ароматная бусина (индивидуальный подбор)',
+        'Паспорт жителя с именем и историей',
+        'Личное письмо в конверте с маркой',
+        'Ключик от сказки на верёвочке',
+        'Белая керамическая птичка-хранительница'
+      ]
+    }
+  ];
+
+  // ===== РЕНДЕРИНГ ТОВАРОВ =====
+  const shopGrid = document.getElementById('shop-grid');
+
+  function renderProducts(filter = 'all') {
+    shopGrid.innerHTML = '';
+    const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
+    
+    filtered.forEach(product => {
+      const card = document.createElement('div');
+      card.className = 'hero-card fade-in visible';
+      card.onclick = () => openModal(product.id);
+      card.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" class="hero-image">
+        <div class="hero-card-content">
+          <div class="hero-name">${product.name}</div>
+          <div class="hero-epithet">${product.epithet}</div>
+          <div class="hero-quote">${product.quote}</div>
+          <div class="hero-price-tag">${product.price}</div>
+        </div>
+      `;
+      shopGrid.appendChild(card);
+    });
+  }
+
+  // ===== ФИЛЬТРАЦИЯ =====
+  function filterProducts(category) {
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.textContent.includes(category) || (category === 'all' && btn.textContent === 'Все')) {
+        btn.classList.add('active');
+      }
+    });
+    renderProducts(category);
+  }
+
+  // ===== МОДАЛЬНОЕ ОКНО =====
+  const modal = document.getElementById('product-modal');
+  
+  function openModal(productId) {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+    
+    document.getElementById('modal-img').src = product.image;
+    document.getElementById('modal-category').textContent = product.category;
+    document.getElementById('modal-name').textContent = product.name;
+    document.getElementById('modal-epithet').textContent = product.epithet;
+    document.getElementById('modal-quote').textContent = product.quote;
+    document.getElementById('modal-description').innerHTML = '<strong>Аромат-якорь:</strong> ' + product.aroma + '<br><br>' + product.description;
+    document.getElementById('modal-price').textContent = product.price;
+    
+    const includesList = document.getElementById('modal-includes-list');
+    includesList.innerHTML = product.includes.map(item => '<li>' + item + '</li>').join('');
+    
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // Закрытие по клику вне окна
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // Закрытие по клавише Esc
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      closeModal();
+    }
+  });
+
+  // ===== АНИМАЦИЯ ПРИ СКРОЛЛЕ =====
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Инициализация
+  renderProducts();
+</script>
+
+</body>
+</html>
